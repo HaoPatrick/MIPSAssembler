@@ -1,9 +1,8 @@
 #pragma once
 
-#include <QtWidgets/QWidget>
+#include <QtWidgets/QMainWindow>
 #include "ui_MIPS_Assembler.h"
-
-class MIPS_Assembler : public QWidget
+class MIPS_Assembler : public QMainWindow
 {
 	Q_OBJECT
 

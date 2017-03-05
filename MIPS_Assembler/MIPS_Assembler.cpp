@@ -2,8 +2,9 @@
 #include <QFileDialog>
 #include <fstream>
 #include <string>
+#include <QMenuBar>
 MIPS_Assembler::MIPS_Assembler(QWidget *parent)
-	: QWidget(parent)
+	: QMainWindow(parent)
 {
 	ui.setupUi(this);
 }

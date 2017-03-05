@@ -1,5 +1,5 @@
 #include "MIPS_Assembler.h"
-#include <QtWidgets/QApplication>
+#include <QtWidgets/QMainWindow>
 
 int main(int argc, char *argv[])
 {
