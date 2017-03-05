@@ -12,4 +12,6 @@ public:
 
 private:
 	Ui::MIPS_AssemblerClass ui;
+	private slots:
+	void on_fileButton_clicked();
 };
