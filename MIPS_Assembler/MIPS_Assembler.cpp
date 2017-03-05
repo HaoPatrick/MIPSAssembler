@@ -2,14 +2,16 @@
 #include <QFileDialog>
 #include <fstream>
 #include <string>
+#include <QDebug>
 #include <QMenuBar>
 MIPS_Assembler::MIPS_Assembler(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+	createActions();
 }
 
-void MIPS_Assembler::on_fileButton_clicked() {
+void MIPS_Assembler::openFile() {
 	QString fileName = QFileDialog::getOpenFileName(
 		this, tr("Open File"), "/", tr("Text File (*.txt)")
 	);
@@ -26,3 +28,11 @@ void MIPS_Assembler::on_fileButton_clicked() {
 	}
 	targetFile.close();
 }
+
+void MIPS_Assembler::createActions() {
+	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
+}
+//void MIPS_Assembler::contextMenuEvent(QContextMenuEvent *event) {
+	//QMenu menu(this);
+	//menu.addAction(actionOpen);
+//}

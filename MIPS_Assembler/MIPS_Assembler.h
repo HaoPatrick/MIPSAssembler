@@ -11,6 +11,12 @@ public:
 
 private:
 	Ui::MIPS_AssemblerClass ui;
+
+
 	private slots:
-	void on_fileButton_clicked();
+	void openFile();
+	//void openFile();
+	void createActions();
+protected:
+	//void contextMenuEvent(QContextMenuEvent *event);
 };

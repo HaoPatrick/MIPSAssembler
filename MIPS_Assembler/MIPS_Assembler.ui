@@ -6,34 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>853</width>
+    <height>653</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>QtGuiApplication1</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="fileButton">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>70</y>
-      <width>112</width>
-      <height>34</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="fileLabel">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>80</y>
-      <width>68</width>
-      <height>19</height>
+      <x>40</x>
+      <y>10</y>
+      <width>501</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -43,10 +30,10 @@
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>160</y>
-      <width>341</width>
-      <height>131</height>
+      <x>30</x>
+      <y>50</y>
+      <width>731</width>
+      <height>481</height>
      </rect>
     </property>
    </widget>
@@ -56,10 +43,19 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>853</width>
      <height>31</height>
     </rect>
    </property>
+   <widget class="QMenu" name="fileButton_2">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="separator"/>
+    <addaction name="actionTest"/>
+   </widget>
+   <addaction name="fileButton_2"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -70,6 +66,32 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="fileButton">
+   <property name="text">
+    <string>Open File</string>
+   </property>
+  </action>
+  <action name="actionOpen_File">
+   <property name="text">
+    <string>Open File</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionTest">
+   <property name="text">
+    <string>Test</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
