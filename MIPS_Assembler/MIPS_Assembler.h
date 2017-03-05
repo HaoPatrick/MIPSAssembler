@@ -12,6 +12,7 @@ public:
 private:
 	Ui::MIPS_AssemblerClass ui;
 	void changeWindowTitle();
+	QString parseLine(std::string eachLine);
 
 	private slots:
 	void openFile();

@@ -2,8 +2,10 @@
 #include <QFileDialog>
 #include <fstream>
 #include <string>
+#include <iostream>
 #include <QDebug>
 #include <QMenuBar>
+
 MIPS_Assembler::MIPS_Assembler(QWidget *parent)
 	: QMainWindow(parent)
 {
@@ -31,10 +33,11 @@ void MIPS_Assembler::openFile() {
 	ui.textEdit->clear();
 	if (targetFile.is_open()) {
 		while (std::getline(targetFile, fileLine)) {
-			ui.textEdit->append(QString::fromStdString(fileLine));
+			ui.textEdit->append(parseLine(fileLine));
 		}
 	}
 	targetFile.close();
+	//qDebug() << ui.textEdit->toHtml();
 }
 
 void MIPS_Assembler::saveFile() {
@@ -67,7 +70,20 @@ void MIPS_Assembler::textChanged() {
 	changeWindowTitle();
 }
 
+QString MIPS_Assembler::parseLine(std::string eachLine) {
+	QString qLine;
+	QString htmlLine;
+	QStringList lineTokens;
+	qLine = QString::fromStdString(eachLine);
+	lineTokens = qLine.split(' ', QString::SkipEmptyParts);
+	for (int i = 0; i < lineTokens.size(); i++) {
+		if (i % 2)
+			htmlLine.append(QString("<span style='color:blue'>%1 </span> ").arg(lineTokens.at(i)));
+		else
+			htmlLine.append(QString("<span style='color:red'>%1 </span> ").arg(lineTokens.at(i)));
+	}
+	return htmlLine;
+}
 void MIPS_Assembler::testHTML() {
-	qDebug() << "asdfasd";
 	ui.textEdit->append("<h2>asdf</h2>");
 }
