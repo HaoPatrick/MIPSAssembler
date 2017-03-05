@@ -1,0 +1,25 @@
+<UI version="4.0" >
+ <class>MIPS_AssemblerClass</class>
+ <widget class="QWidget" name="MIPS_AssemblerClass" >
+  <property name="objectName" >
+   <string notr="true">MIPS_AssemblerClass</string>
+  </property>
+  <property name="geometry" >
+   <rect>
+	<x>0</x>
+	<y>0</y>
+	<width>600</width>
+	<height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>MIPS_Assembler</string>
+  </property>
+ </widget>
+ <layoutDefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
+ <resources>
+   <include location="MIPS_Assembler.qrc"/>
+ </resources>
+ <connections/>
+</UI>
