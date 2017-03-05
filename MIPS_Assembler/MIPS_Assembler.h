@@ -15,8 +15,9 @@ private:
 
 	private slots:
 	void openFile();
-	//void openFile();
+	void saveFile();
 	void createActions();
 protected:
+	std::string filePath;
 	//void contextMenuEvent(QContextMenuEvent *event);
 };

@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
    </widget>
    <widget class="QTextEdit" name="textEdit">
@@ -52,8 +52,7 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
-    <addaction name="separator"/>
-    <addaction name="actionTest"/>
+    <addaction name="actionSave"/>
    </widget>
    <addaction name="fileButton_2"/>
   </widget>
@@ -87,9 +86,12 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionTest">
+  <action name="actionSave">
    <property name="text">
-    <string>Test</string>
+    <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>
