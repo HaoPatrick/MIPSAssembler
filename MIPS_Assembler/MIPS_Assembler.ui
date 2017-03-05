@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>QtGuiApplication1</string>
+   <string>MIPS Assembler</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QLabel" name="fileLabel">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>10</x>
       <y>10</y>
       <width>501</width>
       <height>31</height>
@@ -30,10 +30,10 @@
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>10</x>
       <y>50</y>
-      <width>731</width>
-      <height>481</height>
+      <width>831</width>
+      <height>521</height>
      </rect>
     </property>
    </widget>

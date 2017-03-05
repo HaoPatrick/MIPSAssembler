@@ -11,9 +11,15 @@ MIPS_Assembler::MIPS_Assembler(QWidget *parent)
 	createActions();
 }
 
+void MIPS_Assembler::createActions() {
+	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
+	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveFile()));
+	connect(ui.textEdit, SIGNAL(textChanged()), this, SLOT(textChanged()));
+}
+
 void MIPS_Assembler::openFile() {
 	QString fileName = QFileDialog::getOpenFileName(
-		this, tr("Open File"), "/", tr("Text File (*.txt)")
+		this, tr("Open File"), "Documents", tr("Text File (*.txt)")
 	);
 	ui.fileLabel->setText(fileName);
 	this->filePath = fileName.toStdString();
@@ -37,12 +43,25 @@ void MIPS_Assembler::saveFile() {
 		targetFile.open(this->filePath, std::ios::trunc);
 		targetFile << plainText.toStdString();
 		targetFile.close();
-		qDebug() << QString::fromStdString(this->filePath);
-		qDebug() << "triggered agein";
 	}
+	fileSaved = true;
+	changeWindowTitle();
 }
 
-void MIPS_Assembler::createActions() {
-	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
-	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveFile()));
+void MIPS_Assembler::changeWindowTitle() {
+	QString preWindowTitle = windowTitle();
+	if (fileSaved) {
+		if (preWindowTitle.endsWith('*')) {
+			preWindowTitle.remove(preWindowTitle.lastIndexOf('*'), 1);
+		}
+	}
+	else {
+		if(!preWindowTitle.endsWith('*'))
+			preWindowTitle.push_back('*');
+	}
+	setWindowTitle(preWindowTitle);
+}
+void MIPS_Assembler::textChanged() {
+	fileSaved = false;
+	changeWindowTitle();
 }

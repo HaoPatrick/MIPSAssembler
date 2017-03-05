@@ -11,13 +11,15 @@ public:
 
 private:
 	Ui::MIPS_AssemblerClass ui;
-
+	void changeWindowTitle();
 
 	private slots:
 	void openFile();
 	void saveFile();
 	void createActions();
+	void textChanged();
 protected:
 	std::string filePath;
+	bool fileSaved = true;
 	//void contextMenuEvent(QContextMenuEvent *event);
 };
