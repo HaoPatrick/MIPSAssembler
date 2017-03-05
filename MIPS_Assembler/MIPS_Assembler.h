@@ -18,6 +18,7 @@ private:
 	void saveFile();
 	void createActions();
 	void textChanged();
+	void testHTML();
 protected:
 	std::string filePath;
 	bool fileSaved = true;

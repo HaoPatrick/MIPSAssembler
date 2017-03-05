@@ -15,11 +15,12 @@ void MIPS_Assembler::createActions() {
 	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
 	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveFile()));
 	connect(ui.textEdit, SIGNAL(textChanged()), this, SLOT(textChanged()));
+	connect(ui.actionTest, SIGNAL(triggered()), this, SLOT(testHTML()));
 }
 
 void MIPS_Assembler::openFile() {
 	QString fileName = QFileDialog::getOpenFileName(
-		this, tr("Open File"), "Documents", tr("Text File (*.txt)")
+		this, tr("Open File"), "/", tr("Text File (*.txt)")
 	);
 	ui.fileLabel->setText(fileName);
 	this->filePath = fileName.toStdString();
@@ -64,4 +65,9 @@ void MIPS_Assembler::changeWindowTitle() {
 void MIPS_Assembler::textChanged() {
 	fileSaved = false;
 	changeWindowTitle();
+}
+
+void MIPS_Assembler::testHTML() {
+	qDebug() << "asdfasd";
+	ui.textEdit->append("<h2>asdf</h2>");
 }
