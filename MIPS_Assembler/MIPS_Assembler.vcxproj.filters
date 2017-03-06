@@ -55,6 +55,9 @@
     <ClCompile Include="GeneratedFiles\qrc_MIPS_Assembler.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="HTMLContent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MIPS_Assembler.h">
@@ -70,6 +73,9 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_MIPS_Assembler.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HTMLContent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

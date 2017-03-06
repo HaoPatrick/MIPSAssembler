@@ -1,4 +1,5 @@
 #include "MIPS_Assembler.h"
+#include "HTMLContent.h"
 #include <QFileDialog>
 #include <fstream>
 #include <string>
@@ -73,6 +74,7 @@ void MIPS_Assembler::textChanged() {
 QString MIPS_Assembler::parseLine(std::string eachLine) {
 	QString qLine;
 	QString htmlLine;
+	HTMLContent htmlResult;
 
 	qLine = QString::fromStdString(eachLine);
 	QRegExp instrucReg("(\\s*)?(\\w+)(\\s+)(\\$\\w+)(\\s*)?(,)(\\s*)?(\\$\\w+)(\\s*)?(,)(\\s*)?(\\$\\w+)(\\s*)?(;)(\\s*)(\\/\\/.*)?");
@@ -95,16 +97,20 @@ QString MIPS_Assembler::parseLine(std::string eachLine) {
 	if (instructPos > -1) {
 		for (int i = 1; i < instructTokens.count(); i++) {
 			if (instructTokens.at(i).contains('$')) {
-				htmlLine.append(QString("<span style='color: #16a085'>%1</span>").arg(instructTokens.at(i)));
+				htmlResult.addVariable(instructTokens.at(i));
+				//htmlLine.append(QString("<span style='color: #16a085'>%1</span>").arg(instructTokens.at(i)));
 			}
 			else if(instructTokens.at(i).contains(',')){
-				htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(instructTokens.at(i)));
+				htmlResult.addOperator(instructTokens.at(i));
+				//htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(instructTokens.at(i)));
 			}
 			else if (instructTokens.at(i).contains("//")) {
-				htmlLine.append(QString("<span style='color: #bdc3c7'>%1</span>").arg(instructTokens.at(i)));
+				htmlResult.addComment(instructTokens.at(i));
+				//htmlLine.append(QString("<span style='color: #bdc3c7'>%1</span>").arg(instructTokens.at(i)));
 			}
 			else {
-				htmlLine.append(QString("<span style='color: #7f8c8d'>%1</span>").arg(instructTokens.at(i)));
+				htmlResult.addKeyword(instructTokens.at(i));
+				//htmlLine.append(QString("<span style='color: #7f8c8d'>%1</span>").arg(instructTokens.at(i)));
 			}
 		}
 	}
@@ -112,41 +118,51 @@ QString MIPS_Assembler::parseLine(std::string eachLine) {
 		for (int i = 1; i < startTokens.count(); i++) {
 			if(startTokens.at(i).contains('st'))
 				// Hard code here
-				htmlLine.append(QString("<span style='color: #e67e22'>%1</span>").arg(startTokens.at(i)));
+				htmlResult.addKeyword(startTokens.at(i));
+				//htmlLine.append(QString("<span style='color: #e67e22'>%1</span>").arg(startTokens.at(i)));
 			else if (startTokens.at(i).contains(':')) {
-				htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(startTokens.at(i)));
+				htmlResult.addOperator(startTokens.at(i));
+				//htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(startTokens.at(i)));
 			}
 			else if (instructTokens.at(i).contains("//")) {
-				htmlLine.append(QString("<span style='color: #bdc3c7'>%1</span>").arg(startTokens.at(i)));
+				htmlResult.addComment(startTokens.at(i));
+				//htmlLine.append(QString("<span style='color: #bdc3c7'>%1</span>").arg(startTokens.at(i)));
 			}
 			else {
-				htmlLine.append(QString("<span style='color: #7f8c8d'>%1</span>").arg(startTokens.at(i)));
+				htmlResult.addVariable(startTokens.at(i));
+				//htmlLine.append(QString("<span style='color: #7f8c8d'>%1</span>").arg(startTokens.at(i)));
 			}
 		}
 	}
 	else if (labelPos > -1) {
 		for (int i = 1; i < labelTokens.count(); i++) {
 			if (labelTokens.at(i).contains('.')) {
-				htmlLine.append(QString("<span style='color: #e67e22'>%1</span>").arg(labelTokens.at(i)));
+				htmlResult.addKeyword(labelTokens.at(i));
+				//htmlLine.append(QString("<span style='color: #e67e22'>%1</span>").arg(labelTokens.at(i)));
 			}
 			else if (labelTokens.at(i).contains(':')) {
-				htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(labelTokens.at(i)));
+				htmlResult.addOperator(labelTokens.at(i));
+				//htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(labelTokens.at(i)));
 			}
 			else if (instructTokens.at(i).contains("//")) {
-				htmlLine.append(QString("<span style='color: #bdc3c7'>%1</span>").arg(labelTokens.at(i)));
+				htmlResult.addComment(labelTokens.at(i));
+				//htmlLine.append(QString("<span style='color: #bdc3c7'>%1</span>").arg(labelTokens.at(i)));
 			}
 			else {
-				htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(labelTokens.at(i)));
+				htmlResult.addVariable(labelTokens.at(i));
+				//htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(labelTokens.at(i)));
 			}
 		}
 	}
 	else if (commentPos > -1) {
-		htmlLine.append(QString("<span style='color: #bdc3c7'>%1</span>").arg(qLine));
+		htmlResult.addComment(qLine);
+		//htmlLine.append(QString("<span style='color: #bdc3c7'>%1</span>").arg(qLine));
 	}
 	else {
-		htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(qLine));
+		htmlResult.addVariable(qLine);
+		//htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(qLine));
 	}
-	return htmlLine;
+	return htmlResult.fetchHTML();
 }
 void MIPS_Assembler::testHTML() {
 	ui.textEdit->append("<h2>asdf</h2>");
