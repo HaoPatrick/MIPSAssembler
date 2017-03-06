@@ -81,7 +81,7 @@ QString MIPS_Assembler::parseLine(std::string eachLine) {
 	// Pattern: start:\n
 	QRegExp labelReg("(\\s*)(\\.\\w+)(\\s+)(\\w+)(\\s*)(\\/\\/.*)?");
 	// Pattern: .text 0x00000000
-	QRegExp commentReg("[^(\\w|;|:| |.)+](\\s*)(\\/\\/)(\\s*)(.+)");
+	QRegExp commentReg("(\\s*)(\\/\\/)(\\s*)(.+)");
 	// Pattern: //comment here
 
 	int instructPos = instrucReg.indexIn(qLine);
@@ -100,6 +100,9 @@ QString MIPS_Assembler::parseLine(std::string eachLine) {
 			else if(instructTokens.at(i).contains(',')){
 				htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(instructTokens.at(i)));
 			}
+			else if (instructTokens.at(i).contains("//")) {
+				htmlLine.append(QString("<span style='color: #bdc3c7'>%1</span>").arg(instructTokens.at(i)));
+			}
 			else {
 				htmlLine.append(QString("<span style='color: #7f8c8d'>%1</span>").arg(instructTokens.at(i)));
 			}
@@ -112,6 +115,9 @@ QString MIPS_Assembler::parseLine(std::string eachLine) {
 				htmlLine.append(QString("<span style='color: #e67e22'>%1</span>").arg(startTokens.at(i)));
 			else if (startTokens.at(i).contains(':')) {
 				htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(startTokens.at(i)));
+			}
+			else if (instructTokens.at(i).contains("//")) {
+				htmlLine.append(QString("<span style='color: #bdc3c7'>%1</span>").arg(startTokens.at(i)));
 			}
 			else {
 				htmlLine.append(QString("<span style='color: #7f8c8d'>%1</span>").arg(startTokens.at(i)));
@@ -126,10 +132,16 @@ QString MIPS_Assembler::parseLine(std::string eachLine) {
 			else if (labelTokens.at(i).contains(':')) {
 				htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(labelTokens.at(i)));
 			}
+			else if (instructTokens.at(i).contains("//")) {
+				htmlLine.append(QString("<span style='color: #bdc3c7'>%1</span>").arg(labelTokens.at(i)));
+			}
 			else {
 				htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(labelTokens.at(i)));
 			}
 		}
+	}
+	else if (commentPos > -1) {
+		htmlLine.append(QString("<span style='color: #bdc3c7'>%1</span>").arg(qLine));
 	}
 	else {
 		htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(qLine));
