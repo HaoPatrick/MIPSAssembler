@@ -5,27 +5,94 @@
 #define OPERATOR_COLOR "#9b59b6"
 
 
-HTMLContent::HTMLContent()
+HTMLLine::HTMLLine()
 {
 	this->htmlContent = "";
 }
 
 
-HTMLContent::~HTMLContent()
+HTMLLine::~HTMLLine()
 {
 }
 
-void HTMLContent::addKeyword(QString keyWord) {
+void HTMLLine::addKeyword(QString keyWord) {
 	this->htmlContent.append(QString("<span style='color: %2'>%1</span>").arg(keyWord, KEYWORD_COLOR));
 }
 
-void HTMLContent::addVariable(QString variable) {
+void HTMLLine::addVariable(QString variable) {
 	this->htmlContent.append(QString("<span style='color: %2'>%1</span>").arg(variable, VARIABLE_COLOR));
 }
-void HTMLContent::addComment(QString comment) {
+void HTMLLine::addComment(QString comment) {
 	this->htmlContent.append(QString("<span style='color: %2'>%1</span>").arg(comment, COMMENT_COLOR));
 }
-void HTMLContent::addOperator(QString oneOperator) {
+void HTMLLine::addOperator(QString oneOperator) {
 	this->htmlContent.append(QString("<span style='color: %2'>%1</span>").arg(oneOperator, OPERATOR_COLOR));
 }
 
+void HTMLLine::hilightRawText(std::string rawText) {
+	QString qLine;
+	qLine = QString::fromStdString(rawText);
+	QRegExp instrucReg("(\\s*)?(\\w+)(\\s+)(\\$\\w+)(\\s*)?(,)(\\s*)?(\\$\\w+)(\\s*)?(,)(\\s*)?(\\$\\w+)(\\s*)?(;)(\\s*)(\\/\\/.*)?");
+	// Pattern: add $zero, $zero, $zero;
+	QRegExp startReg("(\\s*)(\\w+)(\\s*)(:)(\\s*)(\\/\\/.*)?");
+	// Pattern: start:\n
+	QRegExp labelReg("(\\s*)(\\.\\w+)(\\s+)(\\w+)(\\s*)(\\/\\/.*)?");
+	// Pattern: .text 0x00000000
+	QRegExp commentReg("(\\s*)(\\/\\/)(\\s*)(.+)");
+	// Pattern: //comment here
+
+	int instructPos = instrucReg.indexIn(qLine);
+	int startPos = startReg.indexIn(qLine);
+	int labelPos = labelReg.indexIn(qLine);
+	int commentPos = commentReg.indexIn(qLine);
+	QStringList instructTokens = instrucReg.capturedTexts();
+	QStringList startTokens = startReg.capturedTexts();
+	QStringList labelTokens = labelReg.capturedTexts();
+	QStringList commentTokens = commentReg.capturedTexts();
+	if (instructPos > -1) {
+		for (int i = 1; i < instructTokens.count(); i++) {
+			this->guessAName(instructTokens.at(i));
+		}
+	}
+	else if (startPos > -1) {
+		for (int i = 1; i < startTokens.count(); i++) {
+			this->guessAName(startTokens.at(i));
+		}
+	}
+	else if (labelPos > -1) {
+		for (int i = 1; i < labelTokens.count(); i++) {
+			this->guessAName(labelTokens.at(i));
+		}
+	}
+	else if (commentPos > -1) {
+		for (int i = 1; i < commentTokens.count(); i++) {
+			this->guessAName(commentTokens.at(i));
+		}
+	}
+	else {
+		this->addVariable(QString::fromStdString(rawText));
+	}
+}
+
+void HTMLLine::guessAName(QString oneToken)
+{
+	QString htmlResult;
+	if (oneToken.contains('$')) {
+		this->addVariable(oneToken);
+	}
+	else if (oneToken.contains(',') || oneToken.contains(';')){
+		this->addOperator(oneToken);
+	}
+	else if (oneToken.contains("//")) {
+		this->addComment(oneToken);
+	}
+	else if (oneToken.contains(':')) {
+		this->addOperator(oneToken);
+	}
+	else if (oneToken.contains('.')) {
+		this->addKeyword(oneToken);
+	}
+	else {
+		this->addKeyword(oneToken);
+	}
+}

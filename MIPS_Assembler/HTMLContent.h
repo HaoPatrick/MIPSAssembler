@@ -1,10 +1,10 @@
 #pragma once
 #include <QtWidgets/QMainWindow>
-class HTMLContent
+class HTMLLine
 {
 public:
-	HTMLContent();
-	~HTMLContent();
+	HTMLLine();
+	~HTMLLine();
 	void addKeyword(QString keyWord);
 	void addVariable(QString vaiable);
 	void addComment(QString comment);
@@ -12,7 +12,9 @@ public:
 	QString fetchHTML() {
 		return this->htmlContent;
 	}
+	void hilightRawText(std::string rawText);
 private:
 	QString htmlContent;
+	void guessAName(QString oneToken);
 };
 
