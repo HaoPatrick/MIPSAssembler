@@ -75,12 +75,23 @@ QString MIPS_Assembler::parseLine(std::string eachLine) {
 	QString htmlLine;
 	QStringList lineTokens;
 	qLine = QString::fromStdString(eachLine);
-	lineTokens = qLine.split(' ', QString::SkipEmptyParts);
-	for (int i = 0; i < lineTokens.size(); i++) {
-		if (i % 2)
-			htmlLine.append(QString("<span style='color:blue'>%1 </span> ").arg(lineTokens.at(i)));
-		else
-			htmlLine.append(QString("<span style='color:red'>%1 </span> ").arg(lineTokens.at(i)));
+	QRegExp rexLen("(\\s*)?(\\w+)(\\s+)(\\$\\w+)(\\s*)?(,)(\\s*)?(\\$\\w+)(\\s*)?(,)(\\s*)?(\\$\\w+)(\\s*)?(;)(\\s*)(\\/\\/.*)?");
+	int pos = rexLen.indexIn(QString::fromStdString(eachLine));
+	qDebug() << QString::fromStdString(eachLine);
+	qDebug() << pos;
+	QStringList lineListTokens = rexLen.capturedTexts();
+	if (pos > -1) {
+		for (int i = 1; i < lineListTokens.count(); i++) {
+			if (lineListTokens.at(i).contains('$')) {
+				htmlLine.append(QString("<span style='color: darkblue'>%1</span>").arg(lineListTokens.at(i)));
+			}
+			else {
+				htmlLine.append(QString("<span style='color: darkred'>%1</span>").arg(lineListTokens.at(i)));
+			}
+		}
+	}
+	else {
+		htmlLine.append(QString("<span style='color: yellow'>%1</span>").arg(QString::fromStdString(eachLine)));
 	}
 	return htmlLine;
 }
