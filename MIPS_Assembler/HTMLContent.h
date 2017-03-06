@@ -5,10 +5,7 @@ class HTMLLine
 public:
 	HTMLLine();
 	~HTMLLine();
-	void addKeyword(QString keyWord);
-	void addVariable(QString vaiable);
-	void addComment(QString comment);
-	void addOperator(QString oneOperator);
+
 	QString fetchHTML() {
 		return this->htmlContent;
 	}
@@ -16,5 +13,10 @@ public:
 private:
 	QString htmlContent;
 	void guessAName(QString oneToken);
+	void addKeyword(QString keyWord);
+	void addVariable(QString vaiable);
+	void addStart(QString start);
+	void addComment(QString comment);
+	void addOperator(QString oneOperator);
 };
 
