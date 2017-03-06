@@ -73,25 +73,66 @@ void MIPS_Assembler::textChanged() {
 QString MIPS_Assembler::parseLine(std::string eachLine) {
 	QString qLine;
 	QString htmlLine;
-	QStringList lineTokens;
+
 	qLine = QString::fromStdString(eachLine);
-	QRegExp rexLen("(\\s*)?(\\w+)(\\s+)(\\$\\w+)(\\s*)?(,)(\\s*)?(\\$\\w+)(\\s*)?(,)(\\s*)?(\\$\\w+)(\\s*)?(;)(\\s*)(\\/\\/.*)?");
-	int pos = rexLen.indexIn(QString::fromStdString(eachLine));
-	qDebug() << QString::fromStdString(eachLine);
-	qDebug() << pos;
-	QStringList lineListTokens = rexLen.capturedTexts();
-	if (pos > -1) {
-		for (int i = 1; i < lineListTokens.count(); i++) {
-			if (lineListTokens.at(i).contains('$')) {
-				htmlLine.append(QString("<span style='color: darkblue'>%1</span>").arg(lineListTokens.at(i)));
+	QRegExp instrucReg("(\\s*)?(\\w+)(\\s+)(\\$\\w+)(\\s*)?(,)(\\s*)?(\\$\\w+)(\\s*)?(,)(\\s*)?(\\$\\w+)(\\s*)?(;)(\\s*)(\\/\\/.*)?");
+	// Pattern: add $zero, $zero, $zero;
+	QRegExp startReg("(\\s*)(\\w+)(\\s*)(:)(\\s*)(\\/\\/.*)?");
+	// Pattern: start:\n
+	QRegExp labelReg("(\\s*)(\\.\\w+)(\\s+)(\\w+)(\\s*)(\\/\\/.*)?");
+	// Pattern: .text 0x00000000
+	QRegExp commentReg("[^(\\w|;|:| |.)+](\\s*)(\\/\\/)(\\s*)(.+)");
+	// Pattern: //comment here
+
+	int instructPos = instrucReg.indexIn(qLine);
+	int startPos = startReg.indexIn(qLine);
+	int labelPos = labelReg.indexIn(qLine);
+	int commentPos = commentReg.indexIn(qLine);
+	QStringList instructTokens = instrucReg.capturedTexts();
+	QStringList startTokens = startReg.capturedTexts();
+	QStringList labelTokens = labelReg.capturedTexts();
+	QStringList commentTokens = commentReg.capturedTexts();
+	if (instructPos > -1) {
+		for (int i = 1; i < instructTokens.count(); i++) {
+			if (instructTokens.at(i).contains('$')) {
+				htmlLine.append(QString("<span style='color: #16a085'>%1</span>").arg(instructTokens.at(i)));
+			}
+			else if(instructTokens.at(i).contains(',')){
+				htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(instructTokens.at(i)));
 			}
 			else {
-				htmlLine.append(QString("<span style='color: darkred'>%1</span>").arg(lineListTokens.at(i)));
+				htmlLine.append(QString("<span style='color: #7f8c8d'>%1</span>").arg(instructTokens.at(i)));
+			}
+		}
+	}
+	else if(startPos>-1){
+		for (int i = 1; i < startTokens.count(); i++) {
+			if(startTokens.at(i).contains('st'))
+				// Hard code here
+				htmlLine.append(QString("<span style='color: #e67e22'>%1</span>").arg(startTokens.at(i)));
+			else if (startTokens.at(i).contains(':')) {
+				htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(startTokens.at(i)));
+			}
+			else {
+				htmlLine.append(QString("<span style='color: #7f8c8d'>%1</span>").arg(startTokens.at(i)));
+			}
+		}
+	}
+	else if (labelPos > -1) {
+		for (int i = 1; i < labelTokens.count(); i++) {
+			if (labelTokens.at(i).contains('.')) {
+				htmlLine.append(QString("<span style='color: #e67e22'>%1</span>").arg(labelTokens.at(i)));
+			}
+			else if (labelTokens.at(i).contains(':')) {
+				htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(labelTokens.at(i)));
+			}
+			else {
+				htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(labelTokens.at(i)));
 			}
 		}
 	}
 	else {
-		htmlLine.append(QString("<span style='color: yellow'>%1</span>").arg(QString::fromStdString(eachLine)));
+		htmlLine.append(QString("<span style='color: #9b59b6'>%1</span>").arg(qLine));
 	}
 	return htmlLine;
 }
