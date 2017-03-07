@@ -2,6 +2,12 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_MIPS_Assembler.h"
+#include <QFileDialog>
+#include <fstream>
+#include <string>
+#include <iostream>
+#include <QDebug>
+#include <QMenuBar>
 class MIPS_Assembler : public QMainWindow
 {
 	Q_OBJECT
@@ -20,6 +26,15 @@ private:
 	void createActions();
 	void textChanged();
 	void testHTML();
+	void pasteFile() {
+		ui.textEdit->paste();
+	}
+	void copyFile() {
+		ui.textEdit->copy();
+	}
+	void cutFile() {
+		ui.textEdit->cut();
+	}
 protected:
 	std::string filePath;
 	bool fileSaved = true;

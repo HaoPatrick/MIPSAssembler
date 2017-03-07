@@ -1,11 +1,6 @@
 #include "MIPS_Assembler.h"
 #include "HTMLContent.h"
-#include <QFileDialog>
-#include <fstream>
-#include <string>
-#include <iostream>
-#include <QDebug>
-#include <QMenuBar>
+
 
 MIPS_Assembler::MIPS_Assembler(QWidget *parent)
 	: QMainWindow(parent)
@@ -20,6 +15,9 @@ void MIPS_Assembler::createActions() {
 	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveFile()));
 	connect(ui.textEdit, SIGNAL(textChanged()), this, SLOT(textChanged()));
 	connect(ui.actionTest, SIGNAL(triggered()), this, SLOT(testHTML()));
+	connect(ui.actionCopy, SIGNAL(triggered()), this, SLOT(copyFile()));
+	connect(ui.actionPaste, SIGNAL(triggered()), this, SLOT(pasteFile()));
+	connect(ui.actionCut, SIGNAL(triggered()), this, SLOT(cutFile()));
 }
 
 void MIPS_Assembler::openFile() {
