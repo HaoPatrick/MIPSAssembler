@@ -10,6 +10,7 @@
 MIPS_Assembler::MIPS_Assembler(QWidget *parent)
 	: QMainWindow(parent)
 {
+	this->filePath = "";
 	ui.setupUi(this);
 	createActions();
 }
@@ -25,7 +26,6 @@ void MIPS_Assembler::openFile() {
 	QString fileName = QFileDialog::getOpenFileName(
 		this, tr("Open File"), "/", tr("Text File (*.txt)")
 	);
-	ui.fileLabel->setText(fileName);
 	this->filePath = fileName.toStdString();
 
 	std::fstream targetFile;
@@ -54,17 +54,11 @@ void MIPS_Assembler::saveFile() {
 }
 
 void MIPS_Assembler::changeWindowTitle() {
-	QString preWindowTitle = windowTitle();
-	if (fileSaved) {
-		if (preWindowTitle.endsWith('*')) {
-			preWindowTitle.remove(preWindowTitle.lastIndexOf('*'), 1);
-		}
-	}
-	else {
-		if(!preWindowTitle.endsWith('*'))
-			preWindowTitle.push_back('*');
-	}
-	setWindowTitle(preWindowTitle);
+	QString windowPreText("MIPS Assembler");
+	QString newWindowTitle = windowPreText + [&saved=this->fileSaved]()->QString{
+		return saved ? "" : "*";
+	}()+"  " + QString::fromStdString(this->filePath);
+	setWindowTitle(newWindowTitle);
 }
 void MIPS_Assembler::textChanged() {
 	fileSaved = false;
