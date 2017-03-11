@@ -18,6 +18,8 @@ void MIPS_Assembler::createActions() {
 	connect(ui.actionCopy, SIGNAL(triggered()), this, SLOT(copyFile()));
 	connect(ui.actionPaste, SIGNAL(triggered()), this, SLOT(pasteFile()));
 	connect(ui.actionCut, SIGNAL(triggered()), this, SLOT(cutFile()));
+	connect(ui.actionRedo, SIGNAL(triggered()), this, SLOT(redoFile()));
+	connect(ui.actionUndo, SIGNAL(triggered()), this, SLOT(undoFile()));
 }
 
 void MIPS_Assembler::openFile() {

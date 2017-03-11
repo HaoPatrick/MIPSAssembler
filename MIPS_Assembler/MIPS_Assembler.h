@@ -35,6 +35,12 @@ private:
 	void cutFile() {
 		ui.textEdit->cut();
 	}
+	void redoFile() {
+		ui.textEdit->redo();
+	}
+	void undoFile() {
+		ui.textEdit->undo();
+	}
 protected:
 	std::string filePath;
 	bool fileSaved = true;
