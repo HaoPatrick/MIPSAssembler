@@ -34,8 +34,10 @@ void MIPS_Assembler::openFile() {
 	ui.textEdit->clear();
 	if (targetFile.is_open()) {
 		while (std::getline(targetFile, fileLine)) {
-			ui.textEdit->append(parseLine(fileLine));
+			//ui.textEdit->append(parseLine(fileLine));
+			this->targetFile.append(QString::fromStdString(fileLine));
 		}
+		ui.textEdit->append(this->targetFile.getLines());
 	}
 	targetFile.close();
 	//qDebug() << ui.textEdit->toHtml();
@@ -63,6 +65,7 @@ void MIPS_Assembler::changeWindowTitle() {
 void MIPS_Assembler::textChanged() {
 	fileSaved = false;
 	changeWindowTitle();
+	qDebug() << ui.textEdit->toPlainText();
 }
 
 QString MIPS_Assembler::parseLine(std::string eachLine) {

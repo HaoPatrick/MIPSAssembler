@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_MIPS_Assembler.h"
+#include "OpenedFile.h"
 #include <QFileDialog>
 #include <fstream>
 #include <string>
@@ -43,6 +44,7 @@ private:
 	}
 protected:
 	std::string filePath;
+	OpenedFile targetFile;
 	bool fileSaved = true;
 	//void contextMenuEvent(QContextMenuEvent *event);
 };
